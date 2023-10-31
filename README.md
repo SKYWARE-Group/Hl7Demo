@@ -1,6 +1,6 @@
 # Hl7Demo
 
-This app is a simple demo for parsing HL7 messages (OML_O21) with [nHapi parser](https://github.com/nHapiNET/nHapi).
+This app is a simple demo for parsing HL7 v2.5 messages( [OML_O21](https://hl7-definition.caristix.com/v2/HL7v2.5/TriggerEvents/OML_O21)) with [nHapi parser](https://github.com/nHapiNET/nHapi).
 
 Demo scenario includes two messages:
 
