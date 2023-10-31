@@ -32,11 +32,11 @@ namespace Hl7Demo
                 if (message is not OML_O21 oml) throw new ApplicationException($"Unsupported type of message ({message.GetStructureName()})");
 
                 // MSH
-                Console.WriteLine($"Sender: {oml.MSH.SendingApplication.NamespaceID} ({oml.MSH.SendingFacility.NamespaceID})");
+                Console.WriteLine($"Sender: {oml.MSH.SendingApplication.NamespaceID.Value} ({oml.MSH.SendingFacility.NamespaceID?.Value})");
 
                 // SFT
                 if (oml.SFTRepetitionsUsed > 0)
-                    Console.WriteLine($"Application info: {oml.GetSFT(0).SoftwareProductName}, ver.{oml.GetSFT(0).SoftwareCertifiedVersionOrReleaseNumber}"); // Optional segment
+                    Console.WriteLine($"Application info: {oml.GetSFT(0).SoftwareProductName.Value}, ver.{oml.GetSFT(0).SoftwareCertifiedVersionOrReleaseNumber.Value}"); // Optional segment
 
                 // PATIENT group
                 // PID
@@ -48,9 +48,9 @@ namespace Hl7Demo
                 for (int pidIndex = 0; pidIndex < oml.PATIENT.PID.PatientIdentifierListRepetitionsUsed; pidIndex++)
                 {
                     // At least LAB^PI will be provided (PK in LIS iLab)
-                    Console.WriteLine($"      {oml.PATIENT.PID.GetPatientIdentifierList(pidIndex).AssigningAuthority?.NamespaceID}" +
+                    Console.WriteLine($"      {oml.PATIENT.PID.GetPatientIdentifierList(pidIndex).AssigningAuthority?.NamespaceID?.Value}" +
                         $"-{oml.PATIENT.PID.GetPatientIdentifierList(pidIndex).IdentifierTypeCode?.Value}:" +
-                        $" {oml.PATIENT.PID.GetPatientIdentifierList(pidIndex).IDNumber}");
+                        $" {oml.PATIENT.PID.GetPatientIdentifierList(pidIndex).IDNumber?.Value}");
                 }
 
                 // PATIENT VISIT group
@@ -67,7 +67,7 @@ namespace Hl7Demo
                 {
 
                     // ORC
-                    Console.WriteLine($"   Action: {orderGroup.ORC.OrderControl.Value}"); // Table 0119 - Order control codes
+                    Console.WriteLine($"   Action: {orderGroup.ORC.OrderControl?.Value}"); // Table 0119 - Order control codes
                     Console.WriteLine($"   Placer order number: {orderGroup.ORC.PlacerOrderNumber?.EntityIdentifier?.Value} @ {orderGroup.ORC.PlacerOrderNumber?.NamespaceID?.Value}"); // Consider unique as composite key including namespace!
                     if (orderGroup.ORC.OrderingProviderRepetitionsUsed > 0) // Optional, only in cases where ordering physician is known
                         Console.WriteLine($"   Referring doctor UIN: {orderGroup.ORC.GetOrderingProvider(0)?.IDNumber?.Value} ({orderGroup.ORC.GetOrderingProvider(0)?.FamilyName?.Surname?.Value} {orderGroup.ORC.GetOrderingProvider(0)?.GivenName?.Value})");
