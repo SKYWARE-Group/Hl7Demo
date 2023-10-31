@@ -36,9 +36,7 @@ namespace Hl7Demo
 
                 // SFT
                 if (oml.SFTRepetitionsUsed > 0)
-                {
                     Console.WriteLine($"Application info: {oml.GetSFT(0).SoftwareProductName}, ver.{oml.GetSFT(0).SoftwareCertifiedVersionOrReleaseNumber}"); // Optional segment
-                }
 
                 // PATIENT group
                 // PID
@@ -72,10 +70,7 @@ namespace Hl7Demo
                     Console.WriteLine($"   Action: {orderGroup.ORC.OrderControl.Value}"); // Table 0119 - Order control codes
                     Console.WriteLine($"   Placer order number: {orderGroup.ORC.PlacerOrderNumber?.EntityIdentifier?.Value} @ {orderGroup.ORC.PlacerOrderNumber?.NamespaceID?.Value}"); // Consider unique as composite key including namespace!
                     if (orderGroup.ORC.OrderingProviderRepetitionsUsed > 0) // Optional, only in cases where ordering physician is known
-                    {
                         Console.WriteLine($"   Referring doctor UIN: {orderGroup.ORC.GetOrderingProvider(0)?.IDNumber?.Value} ({orderGroup.ORC.GetOrderingProvider(0)?.FamilyName?.Surname?.Value} {orderGroup.ORC.GetOrderingProvider(0)?.GivenName?.Value})");
-
-                    }
 
                     // OBSERVATION REQUEST group
                     // OBR
