@@ -17,7 +17,7 @@ namespace Hl7Demo
             string[] files = new[] { "order-1.txt", "order-2.txt" };
             string appBasePath = Path.GetDirectoryName(Environment.ProcessPath)!;
 
-            var parser = new PipeParser();
+            PipeParser parser = new();
             ParserOptions opts = new() { NonGreedyMode = true }; // IMPORTANT! See https://github.com/nHapiNET/nHapi/pull/240
 
             foreach (string file in files)
@@ -32,11 +32,11 @@ namespace Hl7Demo
                 if (message is not OML_O21 oml) throw new ApplicationException($"Unsupported type of message ({message.GetStructureName()})");
 
                 // MSH
-                Console.WriteLine($"Sender: {oml.MSH.SendingApplication.NamespaceID.Value} ({oml.MSH.SendingFacility.NamespaceID?.Value})");
+                Console.WriteLine($"Sender: {oml.MSH.SendingApplication?.NamespaceID?.Value} ({oml.MSH.SendingFacility?.NamespaceID?.Value})");
 
                 // SFT
                 if (oml.SFTRepetitionsUsed > 0)
-                    Console.WriteLine($"Application info: {oml.GetSFT(0).SoftwareProductName.Value}, ver.{oml.GetSFT(0).SoftwareCertifiedVersionOrReleaseNumber.Value}"); // Optional segment
+                    Console.WriteLine($"Application info: {oml.GetSFT(0).SoftwareProductName?.Value}, ver.{oml.GetSFT(0).SoftwareCertifiedVersionOrReleaseNumber?.Value}"); // Optional segment
 
                 // PATIENT group
                 // PID
