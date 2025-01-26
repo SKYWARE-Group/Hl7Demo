@@ -1,10 +1,10 @@
 # Results Reporting
 
-Results reporting follows Transaction **LAB-36** (Sub-order Results Delivery) as outlined in the [IHE Inter-Laboratory Workflow](https://www.ihe.net/uploadedFiles/Documents/Laboratory/IHE_LAB_Suppl_ILW.pdf). In the context of IHE ILW, the **Subcontractor** is the sending party of the results, while **iLab** serves as the **Requester**. The results are transmitted using the **ORU_R01** message (Unsolicited Transmission of an Observation Message).
+Results reporting follows Transaction **LAB-36** (Sub-order Results Delivery) as outlined in the [IHE Inter-Laboratory Workflow](https://www.ihe.net/uploadedFiles/Documents/Laboratory/IHE_LAB_Suppl_ILW.pdf). The results are transmitted using the **ORU_R01** message (Unsolicited Transmission of an Observation Message).
 
 ## Results without previously sent order
 
-It is important to note that **Subcontractors** can send results without having received a prior order. This situation may arise if an order is directly registered in the **Subcontractor's** LIS for any reason.  
+It is important to note that **Subcontractor** can send results without having received a prior order. This situation may arise if an order is directly registered in the **Subcontractor's** LIS for any reason.  
 Although according to HL7 v2.5.1 the **PATIENT** group in the ORU_R01 message is not mandatory, in the case of results without a previously sent order, it will be considered mandatory in this scenario.
 
 The same should apply to the **VISIT** group contained within the **PATIENT** group.
@@ -116,7 +116,10 @@ Although sending examination results from more than one order in a single messag
 
 ### Results without previously received order
 
-In the following example, the **Subcontractor** registered an order **with no message** from the **Requester**. It may be because order is made via phone call, on paper, etc. For simplicity, the examinations are the same as in previous example.
+In the following example, the **Subcontractor** registered an order **with no message** from the **Requester**. It may be because order is made via phone call, on paper, etc.
+
+Since receiving party (**Requester**) may or may not have patient's demographics, in this scenario PID and PV1 segments are mandatory. ORC segments in ORDER OBSERVATION group are highly recommended, mainly to tell the receiver who is attending doctor (ORC.12).
+For simplicity, the examinations are the same as in the previous example.
 
 ```hl7
 MSH|^~\&|||||20250125134501||ORU^R01^ORU_R01|B1MHQY7GMMIX0RG8W039|P|2.5.1

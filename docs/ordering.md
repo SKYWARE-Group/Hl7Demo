@@ -1,37 +1,22 @@
 # Ordering
 
-## Orders from LIS iLab to external system
+Ordering is an implementation of transaction **LAB-35** Sub-order Management. This transaction is used by the **Requester** to place orders to the **Subcontractor**. The transaction enables both **Requester** and **Subcontractor** to notify all subsequent changes of status and/or content of the order. The orders management uses **OML_O21** messages (Unsolicited Transmission of an Observation Message) and expects **ORL_O22** (General Laboratory Order Response) as a response.
 
-To simplify the documentation, we will follow recommendations of [IHE](https://www.ihe.net/). The relevant IHE workflow is [Inter Laboratory Workflow (ILW)](https://wiki.ihe.net/index.php/Inter_Laboratory_Workflow). Following IHE terminology, iLab will be **Requester** and the external system will be **Subcontractor**.
+## Requester role
 
-As a **Requester**, LIS iLab may be configured to send orders via HL7 channel in real-time, based on the following events:
+As a **Requester**, LIS iLab will send orders via HL7 channel in real-time, based on the following events:
 
 - When **order is created** in LIS iLab (this include manual registration or import from external systems)
 - When **order is modified** in LIS iLab (either manually or programmatically)
 
 LIS iLab will track already sent orders, so in case of modification it will send only required changes and will reference initially sent order. In this way, receiving party will have a real-time synchronization with iLab.
 
-Here is the process:
+LIS iLab will receive order status change as well as result report messages.
 
-```mermaid
----
-title: iLab to External System ordering
----
-sequenceDiagram
+## Subcontractor role
 
-    actor Patient
-    participant iLab
-    participant External System
+As a **Subcontractor**, LIS iLab will receive initial orders and order update messages.
 
-    Patient-->>+iLab: New Order
-    iLab-->>-Patient: OK
+During order processing, LIS iLab will send to the **Requester** status update messages.
 
-    iLab->>+External System: OML_O21
-    External System->>-iLab: ACK
-
-    Patient-->>+iLab: Order Update
-    iLab-->>-Patient: OK
-
-    iLab->>+External System: OML_O21
-    External System->>-iLab: ACK
-```
+When results are available, LIS iLab will send results report messages. Incremental (when an examination is ready) or "when whole order is complete" modes are available via channel settings.
