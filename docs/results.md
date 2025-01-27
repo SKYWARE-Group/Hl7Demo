@@ -31,6 +31,26 @@ Here are a few example messages illustrating the points mentioned above. In sake
 
 ### Results with previously received order
 
+Here we could have the simples structure of the message. The model would contain just a **collection of examinations** with their parameters. It would look like this:
+
+```mermaid
+---
+title: Simplest Results Model
+---
+erDiagram
+    Examination {
+        object OrderId        
+        string LoincCode
+        string StatusCode
+    }
+    Parameter {
+        string LoincCode
+        string Result
+        string StatusCode
+    }
+    Examination ||--|{ Parameter : "has many"
+```
+
 In the following example, the **Subcontractor** has received order (158524) from the **Requester** prior to performing analyses (with message OML_O21) and upon finishing the ordered examinations, it reports the results. This is the main scenario in ILW.
 
 ```hl7
@@ -118,7 +138,7 @@ Although sending examination results from more than one order in a single messag
 
 In the following example, the **Subcontractor** registered an order **with no message** from the **Requester**. It may be because order is made via phone call, on paper, etc.
 
-Since receiving party (**Requester**) may or may not have patient's demographics, in this scenario PID and PV1 segments are mandatory. ORC segments in ORDER OBSERVATION group are highly recommended, mainly to tell the receiver who is attending doctor (ORC.12).
+Since receiving party (**Requester**) may or may not have patient's demographics, in this scenario PID and PV1 segments are mandatory. ORC segments in ORDER OBSERVATION group are highly recommended, mainly to tell the receiver who is attending doctor (ORC.12). Basically, here we have the full order model as it shown in [Abstract Model](model.md)
 For simplicity, the examinations are the same as in the previous example.
 
 ```hl7

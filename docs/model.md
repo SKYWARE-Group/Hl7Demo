@@ -13,6 +13,7 @@ erDiagram
         string FinancialClassCode
     }
     Examination {
+        object OrderId
         string LoincCode
         string StatusCode
     }
